@@ -7,8 +7,8 @@ exports.changePasswordValidation = exports.refreshTokenValidation = exports.logi
 const zod_1 = __importDefault(require("zod"));
 exports.loginValidation = zod_1.default.object({
     body: zod_1.default.object({
-        id: zod_1.default.string({
-            required_error: 'Id is required!',
+        email: zod_1.default.string({
+            required_error: 'Email is required!',
         }),
         password: zod_1.default.string({
             required_error: 'Password is required!',

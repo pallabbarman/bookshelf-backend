@@ -6,6 +6,7 @@ import handleCastError from 'errors/handleCastError';
 import handleValidationError from 'errors/handleValidationError';
 import handleZodError from 'errors/handleZodError';
 import { ErrorRequestHandler } from 'express';
+import httpStatus from 'http-status';
 import { IGenericErrorMessage } from 'types/errors';
 import { errorLogger } from 'utils/logger';
 import { ZodError } from 'zod';
@@ -15,7 +16,7 @@ const globalErrorHandlers: ErrorRequestHandler = (err, req, res, next) => {
         ? console.log('globalErrorHandler ~', err)
         : errorLogger.error('globalErrorHandler ~', err);
 
-    let statusCode = 500;
+    let statusCode = httpStatus.INTERNAL_SERVER_ERROR as number;
     let message = 'Internal server error!';
     let errorMessages: IGenericErrorMessage[] = [];
 

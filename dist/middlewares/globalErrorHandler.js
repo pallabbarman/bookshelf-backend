@@ -10,13 +10,14 @@ const apiError_1 = __importDefault(require("../errors/apiError"));
 const handleCastError_1 = __importDefault(require("../errors/handleCastError"));
 const handleValidationError_1 = __importDefault(require("../errors/handleValidationError"));
 const handleZodError_1 = __importDefault(require("../errors/handleZodError"));
+const http_status_1 = __importDefault(require("http-status"));
 const logger_1 = require("../utils/logger");
 const zod_1 = require("zod");
 const globalErrorHandlers = (err, req, res, next) => {
     env_config_1.default.env === 'development'
         ? console.log('globalErrorHandler ~', err)
         : logger_1.errorLogger.error('globalErrorHandler ~', err);
-    let statusCode = 500;
+    let statusCode = http_status_1.default.INTERNAL_SERVER_ERROR;
     let message = 'Internal server error!';
     let errorMessages = [];
     if (err?.name === 'ValidationError') {

@@ -4,8 +4,8 @@ import ApiError from 'errors/apiError';
 import httpStatus from 'http-status';
 import { Secret } from 'jsonwebtoken';
 import User from 'models/user.model';
-import { ILoginUserResponse, IRefreshTokenResponse } from 'types/auth';
-import { IUser, IUserLogin } from 'types/user';
+import { ILoginUserResponse, IRefreshTokenResponse, IUserLogin } from 'types/auth';
+import { IUser } from 'types/user';
 import { createToken, verifyToken } from 'utils/jwtGenerator';
 
 export const newUser = async (payload: IUser): Promise<IUser | null> => {
@@ -35,18 +35,18 @@ export const signInUser = async (payload: IUserLogin): Promise<ILoginUserRespons
         throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect!');
     }
 
-    const { email } = isUserExist;
+    const { id, email, role } = isUserExist;
 
     // create access token
     const accessToken = createToken(
-        { email },
+        { id, email, role },
         envConfig.jwt.secret as Secret,
         envConfig.jwt.expires_in as string
     );
 
     // create refresh token
     const refreshToken = createToken(
-        { email },
+        { id, email, role },
         envConfig.jwt.refresh_token as Secret,
         envConfig.jwt.refresh_expire_in as string
     );
@@ -76,11 +76,13 @@ export const userRefreshToken = async (token: string): Promise<IRefreshTokenResp
         throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist!');
     }
 
-    const { email } = isUserExist;
+    const { id, email, role } = isUserExist;
 
     const newAccessToken = createToken(
         {
+            id,
             email,
+            role,
         },
         envConfig.jwt.secret as Secret,
         envConfig.jwt.expires_in as string

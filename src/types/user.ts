@@ -7,9 +7,11 @@ export interface UserName {
 }
 
 export interface IUser {
+    id: string;
     name: UserName;
     email: string;
     password: string;
+    role: 'user';
     address?: string;
 }
 export interface IUserMethods {
@@ -19,7 +21,6 @@ export interface IUserMethods {
 
 export type UserModel = Model<IUser, Record<string, unknown>, IUserMethods>;
 
-export interface IUserLogin {
-    email: string;
-    password: string;
+export enum USER_ROLE {
+    user = 'user',
 }

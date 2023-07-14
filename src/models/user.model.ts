@@ -34,6 +34,12 @@ const userSchema = new Schema<IUser, Record<string, never>, IUserMethods>(
             required: true,
             select: false,
         },
+        role: {
+            type: String,
+            required: true,
+            enum: ['user'],
+            default: 'user',
+        },
         address: {
             type: String,
         },
@@ -54,6 +60,7 @@ userSchema.methods.isUserExist = async function (email: string): Promise<Partial
         { email },
         {
             id: 1,
+            role: 1,
             email: 1,
             password: 1,
         }
