@@ -6,7 +6,6 @@ export interface ILogin {
 export interface ILoginUserResponse {
     accessToken: string;
     refreshToken?: string;
-    needsChangePassword: boolean | undefined;
 }
 
 export interface IRefreshTokenResponse {
