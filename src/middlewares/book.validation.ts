@@ -17,6 +17,9 @@ export const bookValidation = z.object({
         genre: z.string({
             required_error: 'Genre is required!',
         }),
+        image: z.string({
+            required_error: 'Image is required!',
+        }),
         publicationDate: z.string({
             required_error: 'Publication date is required!',
         }),
@@ -24,5 +27,16 @@ export const bookValidation = z.object({
             required_error: 'User is required!',
         }),
         reviews: z.array(reviewZodSchema).default([]).optional(),
+    }),
+});
+
+export const updateBookValidation = z.object({
+    body: z.object({
+        title: z.string().optional(),
+        author: z.string().optional(),
+        genre: z.string().optional(),
+        image: z.string().optional(),
+        publicationDate: z.string().optional(),
+        user: z.string().optional(),
     }),
 });

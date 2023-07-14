@@ -96,3 +96,41 @@ export const allBooks = async (
         data: result,
     };
 };
+
+export const singleBook = async (id: string): Promise<IBook | null> => {
+    const result = await Book.findById(id).populate('user').populate('reviews.reviewer');
+
+    return result;
+};
+
+export const editBook = async (
+    id: string,
+    payload: Partial<IBook>,
+    user: JwtPayload
+): Promise<IBook | null> => {
+    const { id: userId } = user;
+    const book = await Book.findOne({ _id: id, user: userId });
+
+    if (!book) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Book not Found!');
+    }
+
+    const result = await Book.findOneAndUpdate({ _id: id }, payload, { new: true })
+        .populate('user')
+        .populate('reviews.reviewer');
+
+    return result;
+};
+
+export const removeBook = async (id: string, user: JwtPayload): Promise<IBook | null> => {
+    const { id: userId } = user;
+    const book = await Book.findOne({ _id: id, user: userId });
+
+    if (!book) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Book not Found!');
+    }
+
+    const result = await Book.findByIdAndDelete(id);
+
+    return result;
+};

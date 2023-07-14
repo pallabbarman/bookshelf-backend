@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.allBooks = exports.addNewBook = void 0;
+exports.removeBook = exports.editBook = exports.singleBook = exports.allBooks = exports.addNewBook = void 0;
 /* eslint-disable object-curly-newline */
 /* eslint-disable comma-dangle */
 /* eslint-disable import/prefer-default-export */
@@ -76,3 +76,30 @@ const allBooks = async (filters, paginationOption) => {
     };
 };
 exports.allBooks = allBooks;
+const singleBook = async (id) => {
+    const result = await book_model_1.default.findById(id).populate('user').populate('reviews.reviewer');
+    return result;
+};
+exports.singleBook = singleBook;
+const editBook = async (id, payload, user) => {
+    const { id: userId } = user;
+    const book = await book_model_1.default.findOne({ _id: id, user: userId });
+    if (!book) {
+        throw new apiError_1.default(http_status_1.default.NOT_FOUND, 'Book not Found!');
+    }
+    const result = await book_model_1.default.findOneAndUpdate({ _id: id }, payload, { new: true })
+        .populate('user')
+        .populate('reviews.reviewer');
+    return result;
+};
+exports.editBook = editBook;
+const removeBook = async (id, user) => {
+    const { id: userId } = user;
+    const book = await book_model_1.default.findOne({ _id: id, user: userId });
+    if (!book) {
+        throw new apiError_1.default(http_status_1.default.NOT_FOUND, 'Book not Found!');
+    }
+    const result = await book_model_1.default.findByIdAndDelete(id);
+    return result;
+};
+exports.removeBook = removeBook;

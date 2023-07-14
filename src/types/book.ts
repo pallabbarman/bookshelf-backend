@@ -11,6 +11,7 @@ export interface IBook {
     title: string;
     author: string;
     genre: string;
+    image: string;
     publicationDate: Date;
     user: Types.ObjectId | IUser;
     reviews?: IReview[];

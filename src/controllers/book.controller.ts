@@ -1,9 +1,10 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable import/prefer-default-export */
 import { bookFilterableFields } from 'constants/book';
 import paginationFields from 'constants/pagination';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { addNewBook, allBooks } from 'services/book.service';
+import { addNewBook, allBooks, editBook, removeBook, singleBook } from 'services/book.service';
 import { IBook } from 'types/book';
 import catchAsync from 'utils/catchAsync';
 import pick from 'utils/pick';
@@ -35,5 +36,47 @@ export const getAllBooks = catchAsync(async (req: Request, res: Response) => {
         message: 'Books retrieved successfully!',
         meta: result.meta,
         data: result.data,
+    });
+});
+
+export const getSingleBooks = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const result = await singleBook(id);
+
+    sendResponse<IBook>(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Book retrieved successfully!',
+        data: result,
+    });
+});
+
+export const updateBook = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const data = req.body;
+    const { user } = req;
+
+    const result = await editBook(id, data, user);
+
+    sendResponse<IBook>(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Book updated successfully!',
+        data: result,
+    });
+});
+
+export const deleteBook = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { user } = req;
+
+    const result = await removeBook(id, user);
+
+    sendResponse<IBook>(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Book is deleted successfully!',
+        data: result,
     });
 });
