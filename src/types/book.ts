@@ -17,3 +17,9 @@ export interface IBook {
 }
 
 export type BookModel = Model<IBook, Record<string, unknown>>;
+
+export type IBookFilters = {
+    search?: string;
+    genre?: string;
+    publicationDate?: Date;
+};

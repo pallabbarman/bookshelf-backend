@@ -1,11 +1,17 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable comma-dangle */
 /* eslint-disable import/prefer-default-export */
+import { bookSearchableFields } from 'constants/book';
 import ApiError from 'errors/apiError';
 import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import Book from 'models/book.model';
 import User from 'models/user.model';
-import { IBook } from 'types/book';
+import { SortOrder } from 'mongoose';
+import { IBook, IBookFilters } from 'types/book';
+import { IPaginationOptions } from 'types/pagination';
+import { IGenericResponse } from 'types/response';
+import calculatePagination from 'utils/pagination';
 
 export const addNewBook = async (payload: IBook, user: JwtPayload): Promise<IBook | null> => {
     const { id } = user;
@@ -25,4 +31,68 @@ export const addNewBook = async (payload: IBook, user: JwtPayload): Promise<IBoo
     );
 
     return result;
+};
+
+export const allBooks = async (
+    filters: IBookFilters,
+    paginationOption: IPaginationOptions
+): Promise<IGenericResponse<IBook[]>> => {
+    const { search, ...filtersData } = filters;
+
+    const andConditions = [];
+
+    if (search) {
+        andConditions.push({
+            $or: bookSearchableFields.map((field) => ({
+                [field]: {
+                    $regex: search,
+                    $options: 'i',
+                },
+            })),
+        });
+    }
+
+    if (Object.keys(filtersData).length) {
+        andConditions.push({
+            $and: Object.entries(filtersData).map(([field, value]) => ({
+                [field]: value,
+            })),
+        });
+    }
+
+    if (Object.keys(filtersData).length) {
+        andConditions.push({
+            $and: Object.entries(filtersData).map(([field, value]) => ({
+                [field]: value,
+            })),
+        });
+    }
+
+    const { page, limit, skip, sortBy, sortOrder } = calculatePagination(paginationOption);
+
+    const sortCondition: { [key: string]: SortOrder } = {};
+
+    if (sortBy && sortOrder) {
+        sortCondition[sortBy] = sortOrder;
+    }
+
+    const whereConditions = andConditions.length > 0 ? { $and: andConditions } : {};
+
+    const result = await Book.find(whereConditions)
+        .sort(sortCondition)
+        .skip(skip)
+        .limit(limit)
+        .populate('user')
+        .populate('reviews.reviewer');
+
+    const total = await Book.countDocuments();
+
+    return {
+        meta: {
+            page,
+            limit,
+            total,
+        },
+        data: result,
+    };
 };

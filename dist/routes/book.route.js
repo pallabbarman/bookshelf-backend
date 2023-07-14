@@ -11,4 +11,5 @@ const validateRequest_1 = __importDefault(require("../middlewares/validateReques
 const user_1 = require("../types/user");
 const router = (0, express_1.Router)();
 router.post('/add-new-book', (0, validateRequest_1.default)(book_validation_1.bookValidation), (0, auth_1.default)(user_1.USER_ROLE.user), book_controller_1.createBook);
+router.get('/', book_controller_1.getAllBooks);
 exports.default = router;
