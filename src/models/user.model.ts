@@ -43,6 +43,43 @@ const userSchema = new Schema<IUser, Record<string, never>, IUserMethods>(
         address: {
             type: String,
         },
+        wishlist: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Book',
+            },
+        ],
+        currentlyReading: [
+            {
+                book: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'Book',
+                },
+                startDate: {
+                    type: Date,
+                    default: Date.now,
+                },
+                finished: {
+                    type: Boolean,
+                    default: false,
+                },
+            },
+        ],
+        finishedReading: [
+            {
+                book: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'Book',
+                },
+                startDate: {
+                    type: Date,
+                    default: Date.now,
+                },
+                endDate: {
+                    type: Date,
+                },
+            },
+        ],
     },
     {
         timestamps: true,

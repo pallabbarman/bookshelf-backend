@@ -13,6 +13,17 @@ export interface IUser {
     password: string;
     role: 'user';
     address?: string;
+    wishlist?: string[];
+    currentlyReading?: {
+        book: string;
+        startDate?: Date;
+        finished?: boolean;
+    }[];
+    finishedReading?: {
+        book: string;
+        startDate?: Date;
+        endDate?: Date;
+    }[];
 }
 export interface IUserMethods {
     isUserExist(email: string): Promise<Partial<IUser | null>>;

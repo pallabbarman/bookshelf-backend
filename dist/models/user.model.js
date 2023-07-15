@@ -45,6 +45,43 @@ const userSchema = new mongoose_1.Schema({
     address: {
         type: String,
     },
+    wishlist: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'Book',
+        },
+    ],
+    currentlyReading: [
+        {
+            book: {
+                type: mongoose_1.Schema.Types.ObjectId,
+                ref: 'Book',
+            },
+            startDate: {
+                type: Date,
+                default: Date.now,
+            },
+            finished: {
+                type: Boolean,
+                default: false,
+            },
+        },
+    ],
+    finishedReading: [
+        {
+            book: {
+                type: mongoose_1.Schema.Types.ObjectId,
+                ref: 'Book',
+            },
+            startDate: {
+                type: Date,
+                default: Date.now,
+            },
+            endDate: {
+                type: Date,
+            },
+        },
+    ],
 }, {
     timestamps: true,
     toJSON: {
