@@ -8,7 +8,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import Book from 'models/book.model';
 import User from 'models/user.model';
 import { SortOrder } from 'mongoose';
-import { IBook, IBookFilters } from 'types/book';
+import { IBook, IBookFilters, IReview } from 'types/book';
 import { IPaginationOptions } from 'types/pagination';
 import { IGenericResponse } from 'types/response';
 import calculatePagination from 'utils/pagination';
@@ -133,4 +133,24 @@ export const removeBook = async (id: string, user: JwtPayload): Promise<IBook | 
     const result = await Book.findByIdAndDelete(id);
 
     return result;
+};
+
+export const addComments = async (id: string, data: IReview): Promise<IReview | null> => {
+    const { comment, reviewer } = data;
+
+    const book = await Book.findOne({ _id: id });
+
+    if (!book) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Book not Found!');
+    }
+
+    book.reviews?.push({ reviewer, comment, date: new Date() });
+
+    await book.save();
+
+    return {
+        reviewer,
+        comment,
+        date: new Date(),
+    };
 };

@@ -19,7 +19,6 @@ const bookSchema = new Schema<IBook>(
         },
         image: {
             type: String,
-            required: true,
             default: 'https://i.ibb.co/4MwRXwT/book.jpg',
         },
         publicationDate: {
@@ -35,12 +34,8 @@ const bookSchema = new Schema<IBook>(
             type: [
                 {
                     reviewer: { type: Schema.Types.ObjectId, ref: 'User' },
-                    rating: {
-                        type: Number,
-                        min: 1,
-                        max: 5,
-                    },
                     comment: String,
+                    date: new Date(),
                 },
             ],
             default: [],

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBook = exports.updateBook = exports.getSingleBooks = exports.getAllBooks = exports.createBook = void 0;
+exports.createComments = exports.deleteBook = exports.updateBook = exports.getSingleBooks = exports.getAllBooks = exports.createBook = void 0;
 /* eslint-disable object-curly-newline */
 /* eslint-disable import/prefer-default-export */
 const book_1 = require("../constants/book");
@@ -66,6 +66,17 @@ exports.deleteBook = (0, catchAsync_1.default)(async (req, res) => {
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'Book is deleted successfully!',
+        data: result,
+    });
+});
+exports.createComments = (0, catchAsync_1.default)(async (req, res) => {
+    const { id } = req.params;
+    const data = req.body;
+    const result = await (0, book_service_1.addComments)(id, data);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Comment added successfully!',
         data: result,
     });
 });

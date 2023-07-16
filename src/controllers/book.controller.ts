@@ -4,8 +4,15 @@ import { bookFilterableFields } from 'constants/book';
 import paginationFields from 'constants/pagination';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { addNewBook, allBooks, editBook, removeBook, singleBook } from 'services/book.service';
-import { IBook } from 'types/book';
+import {
+    addComments,
+    addNewBook,
+    allBooks,
+    editBook,
+    removeBook,
+    singleBook,
+} from 'services/book.service';
+import { IBook, IReview } from 'types/book';
 import catchAsync from 'utils/catchAsync';
 import pick from 'utils/pick';
 import sendResponse from 'utils/sendResponse';
@@ -77,6 +84,20 @@ export const deleteBook = catchAsync(async (req: Request, res: Response) => {
         statusCode: httpStatus.OK,
         success: true,
         message: 'Book is deleted successfully!',
+        data: result,
+    });
+});
+
+export const createComments = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const data = req.body;
+
+    const result = await addComments(id, data);
+
+    sendResponse<IReview>(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Comment added successfully!',
         data: result,
     });
 });

@@ -15,4 +15,5 @@ router.get('/', book_controller_1.getAllBooks);
 router.get('/:id', book_controller_1.getSingleBooks);
 router.patch('/:id', (0, validateRequest_1.default)(book_validation_1.updateBookValidation), (0, auth_1.default)(user_1.USER_ROLE.user), book_controller_1.updateBook);
 router.delete('/:id', (0, auth_1.default)(user_1.USER_ROLE.user), book_controller_1.deleteBook);
+router.post('/:id/comments', (0, auth_1.default)(user_1.USER_ROLE.user), book_controller_1.createComments);
 exports.default = router;

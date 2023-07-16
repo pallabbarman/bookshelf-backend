@@ -3,15 +3,15 @@ import { IUser } from './user';
 
 export interface IReview {
     reviewer: Types.ObjectId | IUser;
-    rating: number;
     comment: string;
+    date: Date;
 }
 
 export interface IBook {
     title: string;
     author: string;
     genre: string;
-    image: string;
+    image?: string;
     publicationDate: Date;
     user: Types.ObjectId | IUser;
     reviews?: IReview[];

@@ -18,7 +18,6 @@ const bookSchema = new mongoose_1.Schema({
     },
     image: {
         type: String,
-        required: true,
         default: 'https://i.ibb.co/4MwRXwT/book.jpg',
     },
     publicationDate: {
@@ -34,12 +33,8 @@ const bookSchema = new mongoose_1.Schema({
         type: [
             {
                 reviewer: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User' },
-                rating: {
-                    type: Number,
-                    min: 1,
-                    max: 5,
-                },
                 comment: String,
+                date: new Date(),
             },
         ],
         default: [],

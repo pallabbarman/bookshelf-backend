@@ -1,5 +1,6 @@
 import {
     createBook,
+    createComments,
     deleteBook,
     getAllBooks,
     getSingleBooks,
@@ -18,5 +19,6 @@ router.get('/', getAllBooks);
 router.get('/:id', getSingleBooks);
 router.patch('/:id', validateRequest(updateBookValidation), auth(USER_ROLE.user), updateBook);
 router.delete('/:id', auth(USER_ROLE.user), deleteBook);
+router.post('/:id/comments', auth(USER_ROLE.user), createComments);
 
 export default router;
