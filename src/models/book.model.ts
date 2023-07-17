@@ -35,7 +35,7 @@ const bookSchema = new Schema<IBook>(
                 {
                     reviewer: { type: Schema.Types.ObjectId, ref: 'User' },
                     comment: String,
-                    date: new Date(),
+                    date: Date,
                 },
             ],
             default: [],
