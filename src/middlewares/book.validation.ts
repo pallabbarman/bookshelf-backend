@@ -17,9 +17,7 @@ export const bookValidation = z.object({
         genre: z.string({
             required_error: 'Genre is required!',
         }),
-        image: z.string({
-            required_error: 'Image is required!',
-        }),
+        image: z.string().optional(),
         publicationDate: z.string({
             required_error: 'Publication date is required!',
         }),

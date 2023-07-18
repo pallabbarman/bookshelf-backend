@@ -21,9 +21,7 @@ exports.bookValidation = zod_1.default.object({
         genre: zod_1.default.string({
             required_error: 'Genre is required!',
         }),
-        image: zod_1.default.string({
-            required_error: 'Image is required!',
-        }),
+        image: zod_1.default.string().optional(),
         publicationDate: zod_1.default.string({
             required_error: 'Publication date is required!',
         }),
