@@ -34,7 +34,7 @@ const bookSchema = new mongoose_1.Schema({
             {
                 reviewer: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User' },
                 comment: String,
-                date: new Date(),
+                date: Date,
             },
         ],
         default: [],
